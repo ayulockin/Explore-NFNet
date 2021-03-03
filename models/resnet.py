@@ -46,7 +46,7 @@ def resnet_layer(inputs,
         x = conv(x)
     return x
 
-def resnet_v1(input_shape, depth, num_classes=10):
+def resnet_v1(input_shape, depth, num_classes=10, use_bn=True):
     """ResNet Version 1 Model builder [a]
 
     Stacks of 2 x (3 x 3) Conv2D-BN-ReLU
@@ -90,10 +90,12 @@ def resnet_v1(input_shape, depth, num_classes=10):
                 strides = 2  # downsample
             y = resnet_layer(inputs=x,
                              num_filters=num_filters,
-                             strides=strides)
+                             strides=strides,
+                             batch_normalization=use_bn)
             y = resnet_layer(inputs=y,
                              num_filters=num_filters,
-                             activation=None)
+                             activation=None,
+                             batch_normalization=use_bn)
             if stack > 0 and res_block == 0:  # first layer but not first stack
                 # linear projection residual shortcut connection to match
                 # changed dims
